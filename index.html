@@ -18,6 +18,21 @@ const video=$('logo-video'),canvas=document.createElement('canvas'),ctx=canvas.g
 .brand .diamond img,.brand .diamond video{width:100%;height:100%;transform:none;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 0 7px rgba(165,224,255,.28))}
 .brand .diamond video{z-index:1;opacity:.72}.brand .diamond img{z-index:2;opacity:1}
 .topbar{grid-template-columns:minmax(0,1.05fr) minmax(0,1.1fr) minmax(0,1.25fr) minmax(0,1.6fr)}
+/* Preserve video playback for TV wake behavior, but never show its black canvas or cyan stroke. */
+.brand .diamond video{opacity:0!important;pointer-events:none}
+.brand .diamond img{mix-blend-mode:screen;filter:none}
+.brand .diamond{background:transparent;border:0;box-shadow:none;transform:none;isolation:auto}
+.topbar{height:auto;min-height:clamp(116px,17vh,184px);grid-template-columns:minmax(180px,1fr) minmax(0,1.1fr) minmax(0,1.2fr) minmax(0,1.6fr)}
+.topbar .card{min-width:0;min-height:0;padding:clamp(8px,1vw,18px)}
+.topbar .stack,.topbar .city{min-width:0}
+.topbar .digital{font-size:clamp(19px,2.1vw,40px);white-space:nowrap}
+.topbar .eyebrow{font-size:clamp(10px,.85vw,16px);letter-spacing:.04em;white-space:normal}
+.topbar .sub{white-space:normal;line-height:1.2}
+.topbar .world{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(3px,.6vw,12px)}
+.topbar .city time{font-size:clamp(18px,1.8vw,34px)}
+@media(max-width:1100px){.topbar{grid-template-columns:repeat(2,minmax(0,1fr));min-height:0}.topbar .card{min-height:120px}.topbar .world{grid-column:1/-1}}
+@media(max-width:650px){.topbar{grid-template-columns:1fr}.topbar .card,.topbar .world{grid-column:auto;min-height:100px}}
+
 .topbar .digital{font-size:clamp(20px,2.12vw,41px)}.topbar .eyebrow{font-size:clamp(10px,.9vw,17px);letter-spacing:.055em}.topbar .card{min-width:0}.topbar .city time{font-size:clamp(21px,1.95vw,37px)}
 @media(max-width:1100px){.topbar{height:auto;grid-template-columns:repeat(2,minmax(0,1fr))}.topbar .card{min-height:105px}.topbar .digital{font-size:clamp(21px,3vw,34px)}.panel-head{white-space:normal}.panel-head h2{font-size:clamp(13px,1.4vw,21px);letter-spacing:.03em}}
 @media(max-width:650px){.topbar .world,.topbar>.card:nth-child(3){grid-column:1/-1}.topbar .card{min-height:90px}.topbar .city time{font-size:22px}}
@@ -26,7 +41,7 @@ const video=$('logo-video'),canvas=document.createElement('canvas'),ctx=canvas.g
 (()=>{'use strict';
 // The Monday snapshot is from the published USD calendar. Keep the existing live calendar on other days.
 const dateParts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const part=k=>dateParts.find(x=>x.type===k).value;
-if(part('year')+'-'+part('month')+'-'+part('day')!=='2026-09-28')return;
+if(!['2026-09-27','2026-09-28'].includes(part('year')+'-'+part('month')+'-'+part('day')))return;
 const list=document.getElementById('releases'),verdict=document.getElementById('verdict'),source=document.getElementById('calendar-source');
 const verdictText='Verdict: No high-impact releases scheduled during NY AM session. Low-impact Fed speeches afternoon. Standard position size permitted; if unscheduled headlines or Trump trade statements hit tape, cut risk to half size immediately.';
 let updating=false;
